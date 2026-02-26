@@ -2,7 +2,10 @@
 
 import re
 import requests
-from backend.crawlers.saramin import JobPosting
+try:
+    from crawlers.saramin import JobPosting
+except ImportError:
+    from backend.crawlers.saramin import JobPosting
 
 API_URL = "https://jumpit-api.saramin.co.kr/api/positions"
 

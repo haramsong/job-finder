@@ -4,6 +4,9 @@ __pycache__/
 .venv/
 venv/
 
+# SAM
+.aws-sam/
+
 # Node
 node_modules/
 frontend/.next/

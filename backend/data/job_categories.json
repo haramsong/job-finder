@@ -57,18 +57,25 @@
       "auxiliary_keywords": ["Linux", "Nginx", "ArgoCD", "Prometheus", "Grafana", "ELK", "Helm", "Istio", "Git", "Python", "Bash", "CloudFormation", "Datadog", "Pulumi", "Vault", "Consul", "Packer", "Vagrant", "HAProxy", "Traefik", "Fluentd", "Loki", "Jaeger", "OpenTelemetry", "PagerDuty", "OpsGenie", "New Relic", "CloudWatch", "S3", "EC2", "Lambda", "ECS", "EKS", "Fargate", "VPC", "IAM", "Route53", "Jira", "Slack", "Notion", "Confluence"]
     },
     "security": {
-      "name": "보안",
+      "name": "보안 엔지니어",
       "aliases": ["보안엔지니어", "정보보안", "보안담당자", "보안분석가", "ISMS"],
-      "title_keywords": ["보안", "security", "ISMS", "정보보안", "보안관제"],
+      "title_keywords": ["보안", "security", "ISMS", "정보보안", "보안관제", "보안 담당", "보안담당", "보안 엔지니어", "보안엔지니어"],
       "core_keywords": ["정보보안", "네트워크보안", "보안관제", "취약점분석", "침투테스트", "ISMS", "ISO27001", "방화벽", "IDS", "IPS"],
       "auxiliary_keywords": ["SIEM", "WAF", "VPN", "SSL", "TLS", "암호화", "보안솔루션", "OWASP", "포렌식", "악성코드분석", "Linux", "Python", "Wireshark", "Nessus", "Burp Suite", "Metasploit", "Snort", "Suricata", "Splunk", "QRadar", "SOAR", "EDR", "XDR", "Zero Trust", "PIMS", "개인정보보호", "GDPR", "클라우드보안", "컨테이너보안", "DevSecOps", "Jira", "Slack", "Notion", "Confluence"]
     },
     "operations": {
-      "name": "운영",
-      "aliases": ["시스템운영", "IT운영", "서버운영", "인프라운영", "시스템관리자"],
-      "title_keywords": ["시스템운영", "서버운영", "IT운영", "인프라운영", "시스템관리"],
+      "name": "시스템 엔지니어",
+      "aliases": ["시스템엔지니어", "시스템운영", "IT운영", "서버운영", "인프라운영", "시스템관리자"],
+      "title_keywords": ["시스템", "운영", "시스템 엔지니어", "시스템엔지니어", "서버운영", "IT운영", "인프라운영", "시스템관리"],
       "core_keywords": ["Linux", "Windows Server", "서버운영", "시스템관리", "네트워크관리", "모니터링"],
       "auxiliary_keywords": ["VMware", "Active Directory", "DNS", "DHCP", "백업", "장애대응", "Zabbix", "Nagios", "Shell Script", "PowerShell", "ITIL", "Hyper-V", "ESXi", "vCenter", "NAS", "SAN", "RAID", "L4", "L7", "로드밸런서", "SSL인증서", "Ansible", "Puppet", "Chef", "Grafana", "Prometheus", "CloudWatch", "AWS", "Azure", "GCP", "Jira", "Slack", "Notion", "Confluence"]
+    },
+    "cloud": {
+      "name": "클라우드 엔지니어",
+      "aliases": ["클라우드엔지니어", "클라우드아키텍트", "Cloud Engineer", "Solutions Architect", "솔루션즈아키텍트", "클라우드개발자", "Cloud Architect"],
+      "title_keywords": ["클라우드", "cloud", "AWS", "GCP", "Azure", "클라우드 엔지니어", "클라우드엔지니어", "Solutions Architect", "솔루션 아키텍트"],
+      "core_keywords": ["AWS", "GCP", "Azure", "클라우드", "IaC", "Terraform", "CloudFormation"],
+      "auxiliary_keywords": ["EC2", "S3", "Lambda", "RDS", "ECS", "EKS", "Fargate", "VPC", "IAM", "Route53", "CloudWatch", "CloudFront", "DynamoDB", "SQS", "SNS", "CDK", "Pulumi", "Ansible", "Docker", "Kubernetes", "Linux", "Nginx", "CI/CD", "Jenkins", "GitHub Actions", "ArgoCD", "Prometheus", "Grafana", "Datadog", "ELK", "Helm", "Istio", "Python", "Bash", "Go", "Jira", "Slack", "Notion", "Confluence"]
     }
   }
 }

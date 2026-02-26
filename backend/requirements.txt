@@ -1,6 +1,4 @@
 fastapi
-uvicorn[standard]
+mangum
 requests
 beautifulsoup4
-mangum
-boto3

@@ -1,13 +1,17 @@
 """직군별 공고 필터링 엔진"""
 
 import json
+import re
 from pathlib import Path
 from dataclasses import dataclass
 
-from backend.crawlers.saramin import JobPosting
+try:
+    from crawlers.saramin import JobPosting
+except ImportError:
+    from backend.crawlers.saramin import JobPosting
 
 # 마스터 데이터 로드
-DATA_PATH = Path(__file__).parent.parent / "data" / "job_categories.json"
+DATA_PATH = Path(__file__).parent / "data" / "job_categories.json"
 
 
 @dataclass
@@ -25,11 +29,17 @@ def load_categories() -> dict:
         return json.load(f)["job_categories"]
 
 
-# 사이트 공통 분류 태그 (필터링에서 무시)
+# 사이트 공통 분류 태그 및 기업 유형 (필터링에서 무시)
 IGNORE_KEYWORDS = {
     "웹개발", "서버개발", "앱개발", "개발", "개발자", "엔지니어",
     "프론트엔드", "백엔드", "풀스택", "소프트웨어",
-    "it", "si", "sm", "솔루션", "기타",
+    "it", "si", "sm", "sw", "솔루션", "기타",
+    "saas", "b2b", "b2c", "erp", "crm", "scm",
+    "스타트업", "중소기업", "대기업", "외국계", "공기업",
+    "정규직", "계약직", "인턴", "프리랜서", "파견",
+    "신입", "경력", "경력무관",
+    "network", "네트워크", "서버", "server", "cloud", "web", "mobile", "app",
+    "database", "db", "api", "system", "security", "data",
 }
 
 
@@ -146,14 +156,22 @@ def _match_location(location: str, conditions: list[str]) -> bool:
     return False
 
 
+def _normalize(s: str) -> str:
+    """비교용 정규화: 공백, 특수문자 제거 + 소문자"""
+    return re.sub(r'[\s\-_./]', '', s).lower()
+
+
 def _is_allowed(keyword: str, allowed_set: set[str]) -> bool:
     """키워드가 허용 범위에 포함되는지 확인 (부분 매칭 지원)"""
-    # 정확히 일치
     if keyword in allowed_set:
         return True
-    # 허용 키워드가 공고 키워드에 포함되거나, 공고 키워드가 허용 키워드에 포함
+    kw_norm = _normalize(keyword)
     for allowed_kw in allowed_set:
         if allowed_kw in keyword or keyword in allowed_kw:
+            return True
+        # 정규화 후 비교 (REST API vs restapi 등)
+        aw_norm = _normalize(allowed_kw)
+        if aw_norm in kw_norm or kw_norm in aw_norm:
             return True
     return False
 

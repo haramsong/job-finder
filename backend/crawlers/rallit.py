@@ -1,7 +1,10 @@
 """랠릿 채용 공고 크롤러 (API 기반)"""
 
 import requests
-from backend.crawlers.saramin import JobPosting
+try:
+    from crawlers.saramin import JobPosting
+except ImportError:
+    from backend.crawlers.saramin import JobPosting
 
 BASE_URL = "https://b2c-api.rallit.com/client/api/v1/position"
 HEADERS = {

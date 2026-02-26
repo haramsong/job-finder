@@ -1,0 +1,14 @@
+frontend/
+.git/
+.github/
+.kiro/
+.aws-sam/
+.next/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+README.md
+render.yaml

@@ -1,12 +1,17 @@
 """Job Finder API 서버"""
 
+import json
+import os
+
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.crawlers import saramin, wanted, incruit, linkedin, remember, rallit, jumpit
-# from backend.crawlers import jobkorea  # Playwright 의존성으로 임시 제외
-from backend.crawlers.wanted import TAG_MAP as WANTED_TAG_MAP
-from backend.filter_engine import filter_postings, load_categories
+try:
+    from crawlers.saramin import JobPosting
+    from filter_engine import filter_postings, load_categories
+except ImportError:
+    from backend.crawlers.saramin import JobPosting
+    from backend.filter_engine import filter_postings, load_categories
 
 app = FastAPI(title="Job Finder API")
 
@@ -21,17 +26,63 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 크롤러 목록 (이름, 모듈)
-CRAWLERS = [
-    ("saramin", saramin),
-    # ("jobkorea", jobkorea),  # Playwright 사용으로 느려서 임시 제외
-    ("wanted", wanted),
-    ("incruit", incruit),
-    ("linkedin", linkedin),
-    ("remember", remember),
-    ("rallit", rallit),
-    ("jumpit", jumpit),
-]
+# Step Functions 클라이언트 (Lambda 환경에서만 활성화)
+SFN_ARN = os.environ.get("CRAWL_STATE_MACHINE_ARN", "")
+try:
+    import boto3
+    sfn_client = boto3.client("stepfunctions") if SFN_ARN else None
+except ImportError:
+    sfn_client = None
+
+
+def _crawl_via_step_functions(keyword: str, category: str, pages: int) -> list[JobPosting]:
+    """Step Functions로 병렬 크롤링 실행 (동기)"""
+    resp = sfn_client.start_sync_execution(
+        stateMachineArn=SFN_ARN,
+        input=json.dumps({"keyword": keyword, "category": category, "pages": pages}),
+    )
+    if resp["status"] != "SUCCEEDED":
+        print(f"Step Functions 실패: {resp.get('error')}")
+        return []
+
+    output = json.loads(resp["output"])
+    postings = []
+    # Parallel State 결과는 각 브랜치 결과의 리스트
+    for branch_result in output:
+        for p in branch_result.get("postings", []):
+            postings.append(JobPosting(**p))
+    return postings
+
+
+def _crawl_via_threads(keyword: str, category: str, pages: int) -> list[JobPosting]:
+    """로컬 개발용: ThreadPoolExecutor로 병렬 크롤링"""
+    from concurrent.futures import ThreadPoolExecutor, as_completed
+    try:
+        from crawlers import saramin, wanted, incruit, linkedin, remember, rallit, jumpit
+        from crawlers.wanted import TAG_MAP as WANTED_TAG_MAP
+    except ImportError:
+        from backend.crawlers import saramin, wanted, incruit, linkedin, remember, rallit, jumpit
+        from backend.crawlers.wanted import TAG_MAP as WANTED_TAG_MAP
+
+    crawlers = [
+        ("saramin", saramin), ("wanted", wanted), ("incruit", incruit),
+        ("linkedin", linkedin), ("remember", remember), ("rallit", rallit), ("jumpit", jumpit),
+    ]
+
+    def _run(name, crawler):
+        if name == "wanted":
+            return crawler.crawl(keyword, pages=pages, tag_id=WANTED_TAG_MAP.get(category))
+        return crawler.crawl(keyword, pages=pages)
+
+    postings = []
+    with ThreadPoolExecutor(max_workers=len(crawlers)) as pool:
+        futures = {pool.submit(_run, n, c): n for n, c in crawlers}
+        for f in as_completed(futures):
+            try:
+                postings.extend(f.result())
+            except Exception as e:
+                print(f"[{futures[f]}] 크롤링 실패: {e}")
+    return postings
 
 
 @app.get("/api/categories")
@@ -62,27 +113,11 @@ def get_jobs(
 
     search_keyword = keyword or categories[category]["name"]
 
-    # 모든 크롤러에서 병렬 수집
-    from concurrent.futures import ThreadPoolExecutor, as_completed
-
-    def _run_crawler(name, crawler):
-        if name == "wanted":
-            tag_id = WANTED_TAG_MAP.get(category)
-            return crawler.crawl(search_keyword, pages=crawl_pages, tag_id=tag_id)
-        return crawler.crawl(search_keyword, pages=crawl_pages)
-
-    all_postings = []
-    with ThreadPoolExecutor(max_workers=len(CRAWLERS)) as pool:
-        futures = {
-            pool.submit(_run_crawler, name, crawler): name
-            for name, crawler in CRAWLERS
-        }
-        for future in as_completed(futures):
-            name = futures[future]
-            try:
-                all_postings.extend(future.result())
-            except Exception as e:
-                print(f"[{name}] 크롤링 실패: {e}")
+    # Lambda 환경이면 Step Functions, 로컬이면 ThreadPoolExecutor
+    if sfn_client and SFN_ARN:
+        all_postings = _crawl_via_step_functions(search_keyword, category, crawl_pages)
+    else:
+        all_postings = _crawl_via_threads(search_keyword, category, crawl_pages)
 
     # 필터링
     results = filter_postings(all_postings, category, location=location, allowed_keywords=allowed_keywords)

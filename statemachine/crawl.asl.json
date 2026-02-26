@@ -1,0 +1,118 @@
+{
+  "Comment": "사이트별 병렬 크롤링",
+  "StartAt": "ParallelCrawl",
+  "States": {
+    "ParallelCrawl": {
+      "Type": "Parallel",
+      "End": true,
+      "Branches": [
+        {
+          "StartAt": "CrawlSaramin",
+          "States": {
+            "CrawlSaramin": {
+              "Type": "Task",
+              "Resource": "${CrawlerFunctionArn}",
+              "Parameters": {
+                "crawler": "saramin",
+                "keyword.$": "$.keyword",
+                "pages.$": "$.pages"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "CrawlWanted",
+          "States": {
+            "CrawlWanted": {
+              "Type": "Task",
+              "Resource": "${CrawlerFunctionArn}",
+              "Parameters": {
+                "crawler": "wanted",
+                "keyword.$": "$.keyword",
+                "pages.$": "$.pages",
+                "category.$": "$.category"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "CrawlIncruit",
+          "States": {
+            "CrawlIncruit": {
+              "Type": "Task",
+              "Resource": "${CrawlerFunctionArn}",
+              "Parameters": {
+                "crawler": "incruit",
+                "keyword.$": "$.keyword",
+                "pages.$": "$.pages"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "CrawlLinkedin",
+          "States": {
+            "CrawlLinkedin": {
+              "Type": "Task",
+              "Resource": "${CrawlerFunctionArn}",
+              "Parameters": {
+                "crawler": "linkedin",
+                "keyword.$": "$.keyword",
+                "pages.$": "$.pages"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "CrawlRemember",
+          "States": {
+            "CrawlRemember": {
+              "Type": "Task",
+              "Resource": "${CrawlerFunctionArn}",
+              "Parameters": {
+                "crawler": "remember",
+                "keyword.$": "$.keyword",
+                "pages.$": "$.pages"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "CrawlRallit",
+          "States": {
+            "CrawlRallit": {
+              "Type": "Task",
+              "Resource": "${CrawlerFunctionArn}",
+              "Parameters": {
+                "crawler": "rallit",
+                "keyword.$": "$.keyword",
+                "pages.$": "$.pages"
+              },
+              "End": true
+            }
+          }
+        },
+        {
+          "StartAt": "CrawlJumpit",
+          "States": {
+            "CrawlJumpit": {
+              "Type": "Task",
+              "Resource": "${CrawlerFunctionArn}",
+              "Parameters": {
+                "crawler": "jumpit",
+                "keyword.$": "$.keyword",
+                "pages.$": "$.pages"
+              },
+              "End": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

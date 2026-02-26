@@ -1,0 +1,75 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Job Finder - 채용 공고 수집 및 필터링 서비스 (v2)
+
+Globals:
+  Function:
+    Timeout: 60
+    Runtime: python3.12
+    MemorySize: 256
+    Architectures:
+      - arm64
+
+Resources:
+  # === API Lambda (FastAPI + Mangum) ===
+  ApiFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handler.handler
+      CodeUri: backend/
+      MemorySize: 512
+      Timeout: 120
+      Environment:
+        Variables:
+          CRAWL_STATE_MACHINE_ARN: !Ref CrawlStateMachine
+      Policies:
+        - StepFunctionsExecutionPolicy:
+            StateMachineName: !GetAtt CrawlStateMachine.Name
+        - Statement:
+            - Effect: Allow
+              Action: states:StartSyncExecution
+              Resource: !Ref CrawlStateMachine
+      Events:
+        Api:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins:
+          - "http://localhost:3000"
+          - "https://job-finder.hrsong.com"
+        AllowMethods:
+          - GET
+        AllowHeaders:
+          - "*"
+
+  # === 크롤러 Lambda (사이트별 공통) ===
+  CrawlerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: crawl_handler.handler
+      CodeUri: backend/
+      Timeout: 60
+      MemorySize: 256
+
+  # === Step Functions (병렬 크롤링) ===
+  CrawlStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: !Sub "${AWS::StackName}-crawl"
+      Type: EXPRESS
+      DefinitionUri: statemachine/crawl.asl.json
+      DefinitionSubstitutions:
+        CrawlerFunctionArn: !GetAtt CrawlerFunction.Arn
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref CrawlerFunction
+
+Outputs:
+  ApiUrl:
+    Description: API Gateway URL
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"

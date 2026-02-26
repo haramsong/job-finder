@@ -2,7 +2,10 @@
 
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
-from backend.crawlers.saramin import JobPosting
+try:
+    from crawlers.saramin import JobPosting
+except ImportError:
+    from backend.crawlers.saramin import JobPosting
 
 
 BASE_URL = "https://www.jobkorea.co.kr/Search/"
