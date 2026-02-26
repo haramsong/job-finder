@@ -54,10 +54,8 @@ def _parse_job(job: dict) -> JobPosting | None:
     if not title:
         return None
 
-    # 회사명: 제목에서 [] 안의 텍스트 추출, 없으면 N/A
-    company_name = "N/A"
-    if "[" in title and "]" in title:
-        company_name = title[title.index("[") + 1:title.index("]")]
+    # 회사명
+    company_name = (job.get("organization") or {}).get("name", "N/A")
 
     job_id = job.get("id", "")
     link = f"https://career.rememberapp.co.kr/job/posting/{job_id}"
