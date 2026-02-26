@@ -18,6 +18,7 @@ const SOURCE_COLORS: Record<string, string> = {
   linkedin: "bg-sky-100 text-sky-800",
   remember: "bg-pink-100 text-pink-800",
   rallit: "bg-yellow-100 text-yellow-800",
+  jumpit: "bg-teal-100 text-teal-800",
 };
 
 interface Category { id: string; name: string; core_keywords: string[]; auxiliary_keywords: string[] }

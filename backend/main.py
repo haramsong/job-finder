@@ -3,7 +3,7 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.crawlers import saramin, wanted, incruit, linkedin, remember, rallit
+from backend.crawlers import saramin, wanted, incruit, linkedin, remember, rallit, jumpit
 # from backend.crawlers import jobkorea  # Playwright 의존성으로 임시 제외
 from backend.crawlers.wanted import TAG_MAP as WANTED_TAG_MAP
 from backend.filter_engine import filter_postings, load_categories
@@ -30,6 +30,7 @@ CRAWLERS = [
     ("linkedin", linkedin),
     ("remember", remember),
     ("rallit", rallit),
+    ("jumpit", jumpit),
 ]
 
 
