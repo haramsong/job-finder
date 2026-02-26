@@ -10,69 +10,93 @@
 
 ## 주요 기능
 
-- **멀티 사이트 통합 검색**: 6개 사이트에서 동시에 공고를 수집 (병렬 크롤링)
+- **멀티 사이트 통합 검색**: 7개 사이트에서 동시에 공고를 수집 (Step Functions 병렬 크롤링)
 - **직군별 키워드 필터링**: 핵심/보조 키워드 기반으로 매칭 여부 자동 판별
 - **제목 기반 사전 필터**: 공고 제목에 직군 관련 키워드가 없으면 아예 제외
 - **키워드 커스터마이징**: 핵심/보조 키워드를 칩(Chip) UI로 개별 선택/해제 가능
 - **지역 필터**: 서울, 경기 등 지역별 필터링
 - **제외 공고 확인**: 탈락 사유 키워드를 빨간색으로 강조 표시
 - **반응형 UI**: 데스크톱은 페이지네이션, 모바일은 무한 스크롤
+- **PWA**: 모바일 홈 화면 추가, 오프라인 정적 자산 캐시
 
 ## 지원 크롤링 사이트
 
-| 사이트 | 방식 | 상태 |
-|--------|------|------|
-| 사람인 | HTML 크롤링 | ✅ 활성 |
-| 원티드 | JSON API | ✅ 활성 |
-| 인크루트 | HTML 크롤링 | ✅ 활성 |
-| 링크드인 | HTML 크롤링 | ✅ 활성 |
-| 리멤버 | REST API | ✅ 활성 |
-| 랠릿 | REST API | ✅ 활성 |
-| 잡코리아 | Playwright (CSR) | ⏸️ 임시 제외 (속도 이슈) |
+| 사이트 | 방식 | 상태 | conditions 정보 |
+|--------|------|------|-----------------|
+| 사람인 | HTML 크롤링 | ✅ 활성 | 지역, 경력, 학력, 고용형태 |
+| 원티드 | JSON API | ✅ 활성 | 지역, 경력 |
+| 인크루트 | HTML 크롤링 | ✅ 활성 | 지역, 경력, 학력, 고용형태 |
+| 링크드인 | HTML 크롤링 | ✅ 활성 | 지역 |
+| 리멤버 | REST API | ✅ 활성 | 지역, 경력, 학력 |
+| 랠릿 | REST API | ✅ 활성 | 지역 |
+| 점핏 | REST API | ✅ 활성 | 지역, 경력 |
+| 잡코리아 | Playwright (CSR) | ⏸️ 임시 제외 (속도 이슈) | - |
 
-## 지원 직군
+## 지원 직군 (11개)
 
-퍼블리셔, 프론트엔드, 백엔드, 웹디자이너, 풀스택, 안드로이드, iOS, DevOps, 보안, 운영
+퍼블리셔, 프론트엔드, 백엔드, 웹디자이너, 풀스택, 안드로이드, iOS, DevOps, 보안 엔지니어, 시스템 엔지니어, 클라우드 엔지니어
 
 ## 프로젝트 구조
 
 ```
 job-finder/
-├── backend/                  # FastAPI 백엔드
-│   ├── main.py               # API 서버
+├── backend/                  # FastAPI 백엔드 (Lambda)
+│   ├── main.py               # API 서버 (Mangum으로 Lambda 래핑)
+│   ├── handler.py            # Lambda 핸들러 (API)
+│   ├── crawl_handler.py      # Lambda 핸들러 (크롤러)
 │   ├── filter_engine.py      # 키워드 매칭 필터링 엔진
+│   ├── data/
+│   │   └── job_categories.json  # 직군별 키워드 마스터 데이터
 │   └── crawlers/             # 사이트별 크롤러
 │       ├── saramin.py
 │       ├── wanted.py
 │       ├── incruit.py
 │       ├── linkedin.py
 │       ├── remember.py
-│       └── rallit.py
-├── frontend/                 # Next.js 프론트엔드 (정적 빌드)
+│       ├── rallit.py
+│       └── jumpit.py
+├── frontend/                 # Next.js 프론트엔드 (정적 빌드, PWA)
 │   └── src/app/page.tsx      # 메인 페이지
-├── data/
-│   └── job_categories.json   # 직군별 키워드 사전
-├── requirements.txt          # Python 의존성
-└── render.yaml               # Render 배포 설정
+├── statemachine/
+│   └── crawl.asl.json        # Step Functions 상태 머신 정의
+├── template.yaml             # SAM 템플릿
+├── samconfig.toml            # SAM 배포 설정
+└── .github/workflows/
+    └── deploy-frontend.yml   # 프론트엔드 CI/CD
 ```
 
 ## 기술 스택
 
 | 영역 | 기술 |
 |------|------|
-| 프론트엔드 | Next.js 16, TypeScript, Tailwind CSS 4 |
-| 백엔드 | Python, FastAPI |
+| 프론트엔드 | Next.js 16, TypeScript, Tailwind CSS 4, PWA |
+| 백엔드 | Python 3.12, FastAPI, Mangum |
 | 데이터 수집 | requests, BeautifulSoup, REST API |
-| 배포 | Vercel (프론트), Render (백엔드) |
+| 인프라 | API Gateway (HTTP API), Lambda (arm64), Step Functions (Express) |
+| 배포 | S3 + CloudFront (프론트), SAM (백엔드) |
+| CI/CD | GitHub Actions (OIDC + assume role chaining) |
+
+## 배포 구성
+
+| 구성 요소 | 리소스 |
+|-----------|--------|
+| 프론트엔드 | S3 + CloudFront → job-finder.hrsong.com |
+| 백엔드 API | API Gateway + Lambda (FastAPI + Mangum) |
+| 크롤링 | Step Functions (Express) → 사이트별 Lambda 병렬 실행 |
+| API URL 관리 | AWS Parameter Store (/job-finder/api-url) |
+| DNS | Route53 → CloudFront (A Alias) |
+| 인증서 | ACM *.hrsong.com (us-east-1) |
 
 ## 실행 방법
 
-### 백엔드
+### 백엔드 (로컬)
 
 ```bash
 pip install -r requirements.txt
 uvicorn backend.main:app --reload --port 8000
 ```
+
+로컬에서는 Step Functions 대신 ThreadPoolExecutor로 병렬 크롤링합니다.
 
 ### 프론트엔드
 
@@ -82,7 +106,11 @@ npm install
 npm run dev
 ```
 
-`http://localhost:3000`에서 접속, 백엔드(`localhost:8000`)가 실행 중이어야 합니다.
+### 배포
+
+```bash
+sam build && sam deploy
+```
 
 ## 필터링 방식
 
