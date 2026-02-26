@@ -60,7 +60,7 @@ def _parse_job(job: dict) -> JobPosting | None:
         company_name = title[title.index("[") + 1:title.index("]")]
 
     job_id = job.get("id", "")
-    link = f"https://career.rememberapp.co.kr/jobs/{job_id}"
+    link = f"https://career.rememberapp.co.kr/job/posting/{job_id}"
 
     # 지역 정보
     addr = job.get("normalized_address") or {}
