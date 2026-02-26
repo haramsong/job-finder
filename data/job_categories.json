@@ -1,0 +1,74 @@
+{
+  "job_categories": {
+    "publisher": {
+      "name": "퍼블리셔",
+      "aliases": ["웹퍼블리셔", "UI개발자", "마크업개발자", "퍼블리싱"],
+      "title_keywords": ["퍼블리셔", "퍼블리싱", "마크업", "publisher", "publishing", "UI개발", "웹퍼블"],
+      "core_keywords": ["HTML", "CSS", "웹표준", "웹접근성", "반응형웹", "크로스브라우징"],
+      "auxiliary_keywords": ["JavaScript", "jQuery", "SCSS", "SASS", "LESS", "Bootstrap", "Tailwind", "Git", "SVN", "Gulp", "Webpack", "Vite", "Handlebars", "Pug", "EJS", "Figma", "Zeplin", "Photoshop", "VSCode", "BEM", "PostCSS", "SEO", "W3C", "WAI-ARIA", "GitHub", "GitLab", "Bitbucket", "Jira", "Slack", "Notion"]
+    },
+    "frontend": {
+      "name": "프론트엔드",
+      "aliases": ["프론트엔드개발자", "FE개발자", "프론트엔드엔지니어"],
+      "title_keywords": ["프론트엔드", "프론트", "frontend", "front-end", "FE개발", "React", "Vue"],
+      "core_keywords": ["React", "Vue", "Angular", "TypeScript", "Next.js", "Nuxt", "Svelte"],
+      "auxiliary_keywords": ["JavaScript", "HTML", "CSS", "Redux", "Recoil", "Zustand", "MobX", "Jotai", "TanStack Query", "React Query", "SWR", "Webpack", "Vite", "Rollup", "esbuild", "Turbopack", "Jest", "Vitest", "Cypress", "Playwright", "Storybook", "Git", "GraphQL", "REST API", "Figma", "Zeplin", "Tailwind", "Styled Components", "Emotion", "CSS Modules", "SCSS", "ESLint", "Prettier", "Monorepo", "Turborepo", "Nx", "PWA", "SSR", "SSG", "SEO", "GitHub", "GitLab", "Jira", "Slack", "Notion", "VSCode"]
+    },
+    "backend": {
+      "name": "백엔드",
+      "aliases": ["백엔드개발자", "BE개발자", "서버개발자", "백엔드엔지니어"],
+      "title_keywords": ["백엔드", "backend", "back-end", "BE개발", "서버개발", "서버 개발", "Java", "Spring", "Node.js"],
+      "core_keywords": ["Java", "Spring", "Spring Boot", "Node.js", "Express", "NestJS", "Python", "Django", "FastAPI", "Go", "Kotlin", "C#", ".NET"],
+      "auxiliary_keywords": ["MySQL", "PostgreSQL", "MongoDB", "Redis", "Kafka", "RabbitMQ", "Docker", "Kubernetes", "AWS", "GCP", "Azure", "REST API", "GraphQL", "JPA", "MyBatis", "Hibernate", "Git", "CI/CD", "Linux", "Nginx", "Apache", "Tomcat", "ElasticSearch", "DynamoDB", "Oracle", "MariaDB", "SQLite", "gRPC", "WebSocket", "OAuth", "JWT", "Swagger", "OpenAPI", "Jenkins", "GitHub Actions", "ArgoCD", "Terraform", "Datadog", "Prometheus", "Grafana", "ELK", "S3", "Lambda", "EC2", "RDS", "SQS", "SNS", "MSA", "Microservice", "Jira", "Slack", "Notion", "IntelliJ", "VSCode"]
+    },
+    "web_designer": {
+      "name": "웹디자이너",
+      "aliases": ["UI디자이너", "UX디자이너", "UI/UX디자이너", "웹디자인", "GUI디자이너"],
+      "title_keywords": ["웹디자이너", "웹디자인", "UI디자이너", "UX디자이너", "UI/UX", "GUI디자이너", "web designer"],
+      "core_keywords": ["Figma", "Photoshop", "Illustrator", "XD", "Sketch", "UI설계", "UX설계", "디자인시스템"],
+      "auxiliary_keywords": ["Zeplin", "InVision", "프로토타이핑", "After Effects", "Principle", "ProtoPie", "Adobe Creative Suite", "Framer", "Canva", "Miro", "FigJam", "디자인토큰", "반응형디자인", "모바일디자인", "타이포그래피", "컬러시스템", "아이콘디자인", "와이어프레임", "사용자리서치", "유저빌리티", "A/B테스트", "Jira", "Slack", "Notion", "Confluence"]
+    },
+    "fullstack": {
+      "name": "풀스택",
+      "aliases": ["풀스택개발자", "풀스택엔지니어"],
+      "title_keywords": ["풀스택", "fullstack", "full-stack", "full stack"],
+      "core_keywords": ["React", "Vue", "Angular", "Node.js", "Express", "NestJS", "Spring", "Django", "FastAPI", "Next.js"],
+      "auxiliary_keywords": ["JavaScript", "TypeScript", "Python", "Java", "HTML", "CSS", "MySQL", "PostgreSQL", "MongoDB", "Redis", "Docker", "AWS", "GCP", "Git", "REST API", "GraphQL", "CI/CD", "Tailwind", "SCSS", "Webpack", "Vite", "Jest", "Cypress", "Nginx", "Linux", "Kubernetes", "Terraform", "GitHub Actions", "Jira", "Slack", "Notion", "VSCode"]
+    },
+    "android": {
+      "name": "안드로이드 개발자",
+      "aliases": ["안드로이드개발자", "Android개발자", "안드로이드엔지니어"],
+      "title_keywords": ["안드로이드", "android", "AOS개발", "AOS 개발"],
+      "core_keywords": ["Android", "Kotlin", "Java", "Android Studio", "Jetpack Compose", "MVVM"],
+      "auxiliary_keywords": ["Retrofit", "Room", "Hilt", "Dagger", "Coroutine", "RxJava", "RxKotlin", "Firebase", "Git", "Gradle", "JUnit", "Espresso", "REST API", "Flow", "LiveData", "ViewModel", "Navigation", "DataBinding", "ViewBinding", "Glide", "Coil", "OkHttp", "Proguard", "R8", "Google Play", "CI/CD", "Fastlane", "GitHub Actions", "Bitrise", "Jira", "Slack", "Notion", "Figma"]
+    },
+    "ios": {
+      "name": "iOS 개발자",
+      "aliases": ["iOS개발자", "아이폰개발자", "iOS엔지니어"],
+      "title_keywords": ["iOS", "아이폰", "iPhone", "Swift"],
+      "core_keywords": ["iOS", "Swift", "SwiftUI", "UIKit", "Objective-C", "Xcode"],
+      "auxiliary_keywords": ["Combine", "RxSwift", "CoreData", "Alamofire", "CocoaPods", "SPM", "MVVM", "MVC", "MVP", "VIPER", "Clean Architecture", "Firebase", "Git", "Fastlane", "REST API", "SnapKit", "Then", "Kingfisher", "Moya", "Tuist", "XCTest", "Quick", "Nimble", "TestFlight", "App Store", "CI/CD", "GitHub Actions", "Bitrise", "Jira", "Slack", "Notion", "Figma"]
+    },
+    "devops": {
+      "name": "DevOps",
+      "aliases": ["데브옵스", "DevOps엔지니어", "인프라엔지니어", "SRE", "클라우드엔지니어"],
+      "title_keywords": ["DevOps", "데브옵스", "SRE", "인프라", "클라우드", "cloud"],
+      "core_keywords": ["Docker", "Kubernetes", "AWS", "GCP", "Azure", "Terraform", "Ansible", "Jenkins", "CI/CD"],
+      "auxiliary_keywords": ["Linux", "Nginx", "ArgoCD", "Prometheus", "Grafana", "ELK", "Helm", "Istio", "Git", "Python", "Bash", "CloudFormation", "Datadog", "Pulumi", "Vault", "Consul", "Packer", "Vagrant", "HAProxy", "Traefik", "Fluentd", "Loki", "Jaeger", "OpenTelemetry", "PagerDuty", "OpsGenie", "New Relic", "CloudWatch", "S3", "EC2", "Lambda", "ECS", "EKS", "Fargate", "VPC", "IAM", "Route53", "Jira", "Slack", "Notion", "Confluence"]
+    },
+    "security": {
+      "name": "보안",
+      "aliases": ["보안엔지니어", "정보보안", "보안담당자", "보안분석가", "ISMS"],
+      "title_keywords": ["보안", "security", "ISMS", "정보보안", "보안관제"],
+      "core_keywords": ["정보보안", "네트워크보안", "보안관제", "취약점분석", "침투테스트", "ISMS", "ISO27001", "방화벽", "IDS", "IPS"],
+      "auxiliary_keywords": ["SIEM", "WAF", "VPN", "SSL", "TLS", "암호화", "보안솔루션", "OWASP", "포렌식", "악성코드분석", "Linux", "Python", "Wireshark", "Nessus", "Burp Suite", "Metasploit", "Snort", "Suricata", "Splunk", "QRadar", "SOAR", "EDR", "XDR", "Zero Trust", "PIMS", "개인정보보호", "GDPR", "클라우드보안", "컨테이너보안", "DevSecOps", "Jira", "Slack", "Notion", "Confluence"]
+    },
+    "operations": {
+      "name": "운영",
+      "aliases": ["시스템운영", "IT운영", "서버운영", "인프라운영", "시스템관리자"],
+      "title_keywords": ["시스템운영", "서버운영", "IT운영", "인프라운영", "시스템관리"],
+      "core_keywords": ["Linux", "Windows Server", "서버운영", "시스템관리", "네트워크관리", "모니터링"],
+      "auxiliary_keywords": ["VMware", "Active Directory", "DNS", "DHCP", "백업", "장애대응", "Zabbix", "Nagios", "Shell Script", "PowerShell", "ITIL", "Hyper-V", "ESXi", "vCenter", "NAS", "SAN", "RAID", "L4", "L7", "로드밸런서", "SSL인증서", "Ansible", "Puppet", "Chef", "Grafana", "Prometheus", "CloudWatch", "AWS", "Azure", "GCP", "Jira", "Slack", "Notion", "Confluence"]
+    }
+  }
+}
