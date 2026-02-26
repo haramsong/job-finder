@@ -11,7 +11,10 @@ app = FastAPI(title="Job Finder API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "http://localhost:3000",
+        "https://d1ujto181dgh1n.cloudfront.net",
+    ],
     allow_methods=["GET"],
     allow_headers=["*"],
 )
