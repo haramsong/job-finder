@@ -60,10 +60,13 @@ def _parse_job(job: dict) -> JobPosting | None:
         company_name = title[title.index("[") + 1:title.index("]")]
 
     job_id = job.get("id", "")
-    link = f"https://career.rememberapp.co.kr/job/{job_id}"
+    link = f"https://career.rememberapp.co.kr/jobs/{job_id}"
 
-    # 지역 정보 (API에 없음)
-    conditions = []
+    # 지역 정보
+    addr = job.get("normalized_address") or {}
+    location = addr.get("level1", "")
+    district = addr.get("level2", "")
+    conditions = [f"{location} {district}".strip()] if location else []
 
     # 자격요건에서 키워드 추출
     keywords = []
