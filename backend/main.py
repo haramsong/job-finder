@@ -15,6 +15,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "https://d1ujto181dgh1n.cloudfront.net",
+        "https://job-finder.hrsong.com",
     ],
     allow_methods=["GET"],
     allow_headers=["*"],
