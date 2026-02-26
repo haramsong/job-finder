@@ -75,6 +75,14 @@ def _parse_job(job: dict) -> JobPosting:
     if location:
         conditions.append(f"{location} {district}".strip())
 
+    # 경력
+    annual_from = job.get("annual_from")
+    annual_to = job.get("annual_to")
+    if annual_from and annual_to and annual_to < 100:
+        conditions.append(f"경력 {annual_from}~{annual_to}년")
+    elif annual_from:
+        conditions.append(f"경력 {annual_from}년↑")
+
     return JobPosting(
         company=company,
         title=position,

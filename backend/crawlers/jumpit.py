@@ -33,11 +33,21 @@ def crawl(keyword: str, pages: int = 1, location: str | None = None) -> list[Job
         for p in data.get("positions", []):
             # 제목에서 <span> 태그 제거
             title = re.sub(r"<[^>]+>", "", p.get("title", ""))
+            conditions = p.get("locations", [])
+            # 경력
+            min_c = p.get("minCareer")
+            max_c = p.get("maxCareer")
+            if min_c is not None and max_c and max_c > min_c:
+                conditions.append(f"경력 {min_c}~{max_c}년")
+            elif min_c == 0 and max_c == 0:
+                conditions.append("신입")
+            elif min_c:
+                conditions.append(f"경력 {min_c}년↑")
             results.append(JobPosting(
                 company=p.get("companyName", ""),
                 title=title,
                 link=f"https://www.jumpit.co.kr/position/{p['id']}",
-                conditions=p.get("locations", []),
+                conditions=conditions,
                 keywords=p.get("techStacks", []),
                 source="jumpit",
             ))

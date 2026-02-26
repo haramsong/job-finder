@@ -66,6 +66,20 @@ def _parse_job(job: dict) -> JobPosting | None:
     district = addr.get("level2", "")
     conditions = [f"{location} {district}".strip()] if location else []
 
+    # 경력
+    min_exp = job.get("min_experience")
+    max_exp = job.get("max_experience")
+    if min_exp and max_exp:
+        conditions.append(f"경력 {min_exp}~{max_exp}년")
+    elif min_exp:
+        conditions.append(f"경력 {min_exp}년↑")
+
+    # 학력
+    edu_map = {"bachelor": "대졸", "associate": "초대졸", "master": "석사", "doctor": "박사", "high_school": "고졸"}
+    edu = edu_map.get(job.get("education_requirement", ""))
+    if edu:
+        conditions.append(edu)
+
     # 자격요건에서 키워드 추출
     keywords = []
     qualifications = job.get("qualifications", "") or ""
