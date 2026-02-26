@@ -52,6 +52,8 @@ def _parse_card(card) -> JobPosting | None:
     company = company_el.get_text(strip=True) if company_el else "N/A"
     location = location_el.get_text(strip=True) if location_el else ""
     link = link_el.get("href", "") if link_el else ""
+    # kr.linkedin.com → www.linkedin.com (앱 딥링크 지원)
+    link = link.replace("://kr.linkedin.com/", "://www.linkedin.com/")
 
     conditions = [location] if location else []
 
