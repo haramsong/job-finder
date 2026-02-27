@@ -53,21 +53,6 @@
           }
         },
         {
-          "StartAt": "CrawlLinkedin",
-          "States": {
-            "CrawlLinkedin": {
-              "Type": "Task",
-              "Resource": "${CrawlerFunctionArn}",
-              "Parameters": {
-                "crawler": "linkedin",
-                "keyword.$": "$.keyword",
-                "pages.$": "$.pages"
-              },
-              "End": true
-            }
-          }
-        },
-        {
           "StartAt": "CrawlRemember",
           "States": {
             "CrawlRemember": {

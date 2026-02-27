@@ -1,14 +1,13 @@
 """크롤러 Lambda 핸들러 - Step Functions에서 호출"""
 
 from dataclasses import asdict
-from crawlers import saramin, wanted, incruit, linkedin, remember, rallit, jumpit
+from crawlers import saramin, wanted, incruit, remember, rallit, jumpit
 from crawlers.wanted import TAG_MAP as WANTED_TAG_MAP
 
 CRAWLERS = {
     "saramin": saramin,
     "wanted": wanted,
     "incruit": incruit,
-    "linkedin": linkedin,
     "remember": remember,
     "rallit": rallit,
     "jumpit": jumpit,

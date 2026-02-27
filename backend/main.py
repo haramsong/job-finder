@@ -58,15 +58,15 @@ def _crawl_via_threads(keyword: str, category: str, pages: int) -> list[JobPosti
     """로컬 개발용: ThreadPoolExecutor로 병렬 크롤링"""
     from concurrent.futures import ThreadPoolExecutor, as_completed
     try:
-        from crawlers import saramin, wanted, incruit, linkedin, remember, rallit, jumpit
+        from crawlers import saramin, wanted, incruit, remember, rallit, jumpit
         from crawlers.wanted import TAG_MAP as WANTED_TAG_MAP
     except ImportError:
-        from backend.crawlers import saramin, wanted, incruit, linkedin, remember, rallit, jumpit
+        from backend.crawlers import saramin, wanted, incruit, remember, rallit, jumpit
         from backend.crawlers.wanted import TAG_MAP as WANTED_TAG_MAP
 
     crawlers = [
         ("saramin", saramin), ("wanted", wanted), ("incruit", incruit),
-        ("linkedin", linkedin), ("remember", remember), ("rallit", rallit), ("jumpit", jumpit),
+        ("remember", remember), ("rallit", rallit), ("jumpit", jumpit),
     ]
 
     def _run(name, crawler):
